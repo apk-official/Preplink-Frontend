@@ -1,11 +1,22 @@
 import { Outlet } from "react-router";
-import MenuBar from "./MenuBar";
+import TopBar from "./TopBar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import AppSideBar from "./AppSideBar";
 
 export default function Layout() {
   return (
-    <div className="p-4 md:p-6 lg:p-8 xl:p-10 2xl:p-12 text-sm bg-[#F5F5F5] min-h-screen w-screen">
-      <MenuBar />
-      <Outlet />
-    </div>
+    <SidebarProvider>
+      
+      <div className="flex min-h-screen w-screen bg-[#FEFEFE]">
+       <AppSideBar /> 
+        <div className="flex flex-1 flex-col">
+          <TopBar />
+          <main className="flex-1 p-4">
+            <Outlet />
+          </main>
+        </div>
+      </div>
+
+    </SidebarProvider>
   );
 }

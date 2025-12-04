@@ -1,4 +1,5 @@
 import Layout from "@/components/Layout";
+import ProjectDetails from "@/components/ProjectDetails";
 import Login from "@/features/auth/Login";
 import HomePage from "@/features/dashboard/HomePage";
 import SettingsPage from "@/features/dashboard/SettingsPage";
@@ -13,6 +14,7 @@ export default function AppRoutes() {
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="settings" element={<SettingsPage />} />
+          <Route path="project/:id" element={<ProjectDetails />} />
         </Route>
       </Routes>
     </BrowserRouter>
