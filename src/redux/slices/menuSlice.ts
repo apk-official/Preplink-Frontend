@@ -5,7 +5,7 @@ interface MenuState {
 }
 
 const initialState: MenuState = {
-  activeItem: "Home",
+  activeItem: "/",
 };
 
 const menuSlice = createSlice({
