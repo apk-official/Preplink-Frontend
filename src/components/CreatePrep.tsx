@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "./ui/button";
-import { PlusIcon, RocketLaunchIcon } from "@phosphor-icons/react";
+import { PlusIcon } from "@phosphor-icons/react";
 import CreatePrepForm from "./CreatePrepForm";
 
 export default function CreatePrep() {
