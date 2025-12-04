@@ -31,11 +31,11 @@ const TabItems = [
   },
   {
     title: "Tips",
-    render: (detail: ProjectDetail) => <div>Hi</div>,
+    render: (detail: ProjectDetail) => <div>{detail.interview_tips}</div>,
   },
   {
     title: "About the company",
-    render: (detail: ProjectDetail) => <div>Hi</div>,
+    render: (detail: ProjectDetail) => <div>{detail.about_company.about}</div>,
   },
 ];
 
