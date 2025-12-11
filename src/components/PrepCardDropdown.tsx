@@ -26,7 +26,10 @@ export default function PrepCardDropdown() {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className="bg-[#FEFEFE] outline-none focus-visible:ring-0 border-none hover:bg-[#F1EDFE] cursor-pointer text-[#131515]">
+          <Button
+            className="bg-[#FEFEFE] outline-none focus-visible:ring-0 border-none hover:bg-[#F1EDFE] cursor-pointer text-[#131515] z-50"
+            onClick={(e) => e.stopPropagation()}
+          >
             <DotsThreeOutlineVerticalIcon weight="fill" />
           </Button>
         </DropdownMenuTrigger>
@@ -34,7 +37,10 @@ export default function PrepCardDropdown() {
         <DropdownMenuContent>
           <DropdownMenuItem
             className="cursor-pointer flex items-center gap-2 focus:bg-[#F1EDFE]"
-            onClick={() => setOpenDialog(true)} // open dialog on click
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpenDialog(true);
+            }} // open dialog on click
           >
             <TrashIcon color="#E62629" /> Delete
           </DropdownMenuItem>
@@ -47,21 +53,26 @@ export default function PrepCardDropdown() {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete this Prep from our servers.
+              This action cannot be undone. This will permanently delete this
+              Prep from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel
-              onClick={() => setOpenDialog(false)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpenDialog(false);
+              }}
               className="cursor-pointer"
             >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
               className="bg-[#E62629] cursor-pointer hover:bg-[#E62629] text-[#fefefe]"
-              onClick={() => {
+              onClick={(e) => {
                 // handle delete action here
                 console.log("Item deleted!");
+                e.stopPropagation();
                 setOpenDialog(false);
               }}
             >

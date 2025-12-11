@@ -31,7 +31,7 @@ export default function PrepCard({ id,company, position, date }: PrepCardProps) 
 
   return (
     <div
-      className="bg-[#FEFFFE] border border-[#E5E5E5] hover:border-[#5E2BFF] w-full hover:shadow-[0_4px_15px_rgba(227,227,227,0.5)] rounded-3xl p-4 flex flex-col justify-center items-center cursor-pointer"
+      className="bg-[#FEFFFE] border border-[#E5E5E5] hover:border-[#5E2BFF] w-full hover:shadow-[0_4px_15px_rgba(227,227,227,0.5)] rounded-3xl p-4 flex flex-col justify-center items-center cursor-pointer z-0"
       onClick={handleSelect}
     >
       {/* Row 1 - Company Logo and Arrow Button  */}
