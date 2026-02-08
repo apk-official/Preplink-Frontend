@@ -1,4 +1,3 @@
-import ForgotPassword from "@/components/ForgotPassword";
 import Layout from "@/components/Layout";
 import LoginForm from "@/components/LoginForm";
 import ProjectDetails from "@/components/ProjectDetails";
@@ -14,7 +13,6 @@ export default function AppRoutes() {
         {/* Public Route  */}
         <Route path="/auth/" element={<Login />}>
           <Route path="login" element={<LoginForm />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
         </Route>
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
