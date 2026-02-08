@@ -8,9 +8,9 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Spinner } from "@/components/ui/spinner";
+// import { Spinner } from "@/components/ui/spinner";
 import { Button } from "./ui/button";
-import { PlusIcon } from "@phosphor-icons/react";
+import { PlusIcon, RocketLaunchIcon } from "@phosphor-icons/react";
 import CreatePrepForm from "./CreatePrepForm";
 
 export default function CreatePrep() {
@@ -41,11 +41,11 @@ export default function CreatePrep() {
             type="submit"
             form="form-create-prep"
                       className="bg-[#5E2BFF] hover:bg-[#6E40FF] text-[#F5F5F5] cursor-pointer"
-                      disabled
+                      
           >
-            {/* <RocketLaunchIcon /> */}
-            <Spinner />
-            Creating Prep
+            <RocketLaunchIcon />
+            {/* <Spinner /> */}
+            Create Prep
           </Button>
         </DialogFooter>
       </DialogContent>
