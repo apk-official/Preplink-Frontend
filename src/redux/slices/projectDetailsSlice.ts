@@ -8,9 +8,13 @@ interface ProjectDetail{
     interview_tips: string[];
     about_company: {
         about: string;
+        about_url:string,
         vision: string;
+        vision_url:string,
         mission: string;
+        mission_url:string,
         additional: string;
+        additional_url:string
     };  
 }
 

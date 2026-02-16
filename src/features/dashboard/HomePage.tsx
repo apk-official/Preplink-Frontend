@@ -6,25 +6,49 @@ import { Input } from "@/components/ui/input";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import EmptySearch from "@/components/EmptySearch";
+
+type SortOption = "NEWEST" | "OLDEST" | "NAME_AZ" | "NAME_ZA";
+
 
 export default function HomePage() {
   const projects = useSelector((state: RootState) => state.project);
   const [search, setSearch] = useState<string>("");
-  console.log(projects);
-  const filteredProjects = projects.filter((project) =>
-    `${project.company} ${project.position}`
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  );
+  const [sortBy,setSortBy]=useState<SortOption>("NEWEST")
+ 
+
+  const filteredProjects = useMemo(()=> {
+    const filtered = projects.filter((project) =>
+      `${project.company} ${project.position}`
+        .toLowerCase()
+        .includes(search.toLowerCase()));
+      
+    const sorted = [...filtered]
+    sorted.sort((a, b) => {
+      switch (sortBy) {
+        case "NEWEST":
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        case "OLDEST":
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case "NAME_AZ":
+          return a.company.localeCompare(b.company);
+        case "NAME_ZA":
+          return b.company.localeCompare(a.company);
+        default:
+          return 0;
+      }
+    });
+    return sorted;
+    
+    },[projects,search,sortBy]);
 
   const hasProjects = filteredProjects.length > 0;
   return (
     <>
       <h2 className="text-xl">My Prep</h2>
 
-      {!projects && (
+      {projects.length===0 && (
         <div className="h-full max-w-full flex items-center justify-center">
           <EmptyPrep />
         </div>
@@ -47,7 +71,7 @@ export default function HomePage() {
             </div>
 
             <div className="flex items-center justify-center gap-2">
-              {filteredProjects.length > 1 && <Sort />}
+              {filteredProjects.length > 1 && <Sort value={sortBy} onChange={setSortBy}/>}
               <CreatePrep />
             </div>
           </div>
