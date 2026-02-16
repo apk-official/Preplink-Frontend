@@ -31,26 +31,34 @@ export const mockProjectDetails = {
       {
         question: "Explain about yourself",
         answer:
-                "I'm a software engineer with experience in building scalable applications...",
-        type:"Generic Question"
+          "I'm a software engineer with experience in building scalable applications...",
+        type: "Generic Question",
       },
       {
         question: "How would you design a feature for students?",
-          answer: "I'd use a progress tracking system with visual indicators...",
-        type:"Generic Question"
+        answer: "I'd use a progress tracking system with visual indicators...",
+        type: "Generic Question",
       },
       {
         question: "How would you design a systems?",
-          answer: "I use MVP....",
-        type:"Tech Questions"
+        answer: "I use MVP....",
+        type: "Tech Questions",
       },
     ],
-    interview_tips: ["Be confident", "Research the company", "Mock interviews help"],
+    interview_tips: [
+      "Demonstrate problem-solving ability by clearly explaining your thought process step by step, especially when answering technical or scenario-based questions that require structured reasoning and logical breakdown.",
+      "Research the company",
+      "Mock interviews help",
+    ],
     about_company: {
       about: "De'Lead is a leading ed-tech firm.",
+      about_url: "https://example.com",
       vision: "Empower students globally.",
+      vision_url: "https://example.com",
       mission: "Deliver quality education through tech.",
+      mission_url: "https://example.com",
       additional: "They recently launched a Python bootcamp.",
+      additional_url: "https://example.com",
     },
   },
   2: {
@@ -58,9 +66,13 @@ export const mockProjectDetails = {
     interview_tips: [],
     about_company: {
       about: "TechNova builds enterprise-grade UIs.",
+      about_url: "https://example.com",
       vision: "Redefine frontend engineering.",
+      vision_url: "https://example.com",
       mission: "Innovation through design.",
+      mission_url: "https://example.com",
       additional: "Open-source contributor in web tools.",
+      additional_url: "https://example.com",
     },
   },
 };

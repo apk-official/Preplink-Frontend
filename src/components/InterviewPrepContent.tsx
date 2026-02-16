@@ -2,6 +2,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import InterviewQA from "./InterviewQA";
 import type { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
+import InterviewTips from "./InterviewTips";
+import AboutCompany from "./AboutCompany";
 
 interface InterviewPrepContentProp {
   id: number;
@@ -16,9 +18,13 @@ interface ProjectDetail {
   interview_tips: string[];
   about_company: {
     about: string;
+    about_url:string,
     vision: string;
+    vision_url:string,
     mission: string;
+    mission_url:string,
     additional: string;
+    additional_url:string
   };
 }
 
@@ -31,11 +37,11 @@ const TabItems = [
   },
   {
     title: "Tips",
-    render: (detail: ProjectDetail) => <div>{detail.interview_tips}</div>,
+    render: (detail: ProjectDetail) => (<InterviewTips tips={detail.interview_tips}/>),
   },
   {
     title: "About the company",
-    render: (detail: ProjectDetail) => <div>{detail.about_company.about}</div>,
+    render: (detail: ProjectDetail) => (<AboutCompany about_company={detail.about_company } />),
   },
 ];
 

@@ -10,7 +10,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-import { HouseIcon, GearSixIcon, SignOutIcon } from "@phosphor-icons/react";
+import { HouseIcon, GearSixIcon, SignOutIcon, ListStarIcon} from "@phosphor-icons/react";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { NavLink, useLocation } from "react-router";
@@ -25,13 +25,18 @@ const items = [
     icon: HouseIcon,
   },
   {
+    title: "Resume Optimiser",
+    url: "/resume-optimiser",
+    icon: ListStarIcon,
+  },
+  {
     title: "Settings",
-    url: "settings",
+    url: "/settings",
     icon: GearSixIcon,
   },
   {
     title: "LogOut",
-    url: "logout",
+    url: "/logout",
     icon: SignOutIcon,
   },
 ];
@@ -59,7 +64,6 @@ export default function AppSideBar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    onClick={() => dispatch(setActiveItem(item.url))}
                     className={cn(
                       "py-5 px-5 rounded-lg cursor-pointer",
                       activeItem === item.url
@@ -67,7 +71,7 @@ export default function AppSideBar() {
                         : "text-[#131515] hover:bg-[#E9E5F6]"
                     )}
                   >
-                    <NavLink key={item.title} to={item.url}>
+                    <NavLink  to={item.url}>
                       {activeItem === item.url ? (
                         <item.icon weight="fill" />
                       ) : (

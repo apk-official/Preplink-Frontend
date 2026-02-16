@@ -9,9 +9,22 @@ import {
 import { Button } from "./ui/button";
 import { FunnelSimpleIcon } from "@phosphor-icons/react";
 
-const SortByItems = ["Newest First", "Oldest First", "Name (A-Z)", "Name (Z-A)"]
+type SortOption = "NEWEST" | "OLDEST" | "NAME_AZ" | "NAME_ZA";
 
-export default function Sort() {
+const SortByItems: { label: string; value: SortOption }[] = [
+  { label: "Newest First", value: "NEWEST" },
+  { label: "Oldest First", value: "OLDEST" },
+  { label: "Name (A-Z)", value: "NAME_AZ" },
+  { label: "Name (Z-A)", value: "NAME_ZA" },
+];
+
+export default function Sort({
+  value,
+  onChange,
+}: {
+  value: SortOption;
+  onChange: (v: SortOption) => void;
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,9 +35,17 @@ export default function Sort() {
       <DropdownMenuContent>
         <DropdownMenuLabel>Sort By</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {SortByItems.map((item)=>(<DropdownMenuItem className="cursor-pointer focus:bg-[#F1EDFE]">
-          {item}
-        </DropdownMenuItem>))}
+        {SortByItems.map((item) => (
+          <DropdownMenuItem
+            key={item.value}
+            className="cursor-pointer focus:bg-[#F1EDFE]"
+            onClick={() => onChange(item.value)}
+          >
+            <span className={value === item.value ? "font-medium" : ""}>
+              {item.label}
+            </span>
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
