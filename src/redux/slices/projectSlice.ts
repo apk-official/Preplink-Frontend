@@ -1,5 +1,4 @@
 import { apiFetch } from "@/lib/api";
-import { mockProjects } from "@/mock/mockData";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export interface Projects{
