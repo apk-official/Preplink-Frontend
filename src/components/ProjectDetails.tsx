@@ -13,12 +13,12 @@ export default function ProjectDetails() {
   
   const dispatch = useAppDispatch();
 
-  // ✅ project list comes from state.project.items
+  //  project list comes from state.project.items
   const project = useAppSelector((state) =>
     state.project.items.find((p) => p.project_id === projectId)
   );
 
-  // ✅ project details fetched by id
+  //  project details fetched by id
   const detail = useAppSelector((state) => state.projectDetails.byId[projectId]);
   const status = useAppSelector(
     (state) => state.projectDetails.statusById[projectId] ?? "idle"

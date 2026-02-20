@@ -18,12 +18,12 @@ interface AboutCompanyProps {
 
 export default function AboutCompany({ about_company }: AboutCompanyProps) {
   const sections = [
-    {
-      label: "About",
-      content: about_company.about,
-      url: about_company.about_url,
-      badgeColor: "bg-[#2BBCFF]",
-    },
+    // {
+    //   label: "About",
+    //   content: about_company.about,
+    //   url: about_company.about_url,
+    //   badgeColor: "bg-[#2BBCFF]",
+    // },
     {
       label: "Vision",
       content: about_company.vision,

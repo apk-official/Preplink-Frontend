@@ -22,6 +22,7 @@ export default function InterviewQA({ questions }: InterviewQAProps) {
   function handleShowAnswer() {
     setShowAnswer((prev) => !prev);
   }
+  console.log("questions", questions);
   return (
     <>
       <div className="flex flex-col md:flex-row items-start md:items-center md:justify-center gap-2">
