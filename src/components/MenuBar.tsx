@@ -27,7 +27,8 @@ export default function MenuBar() {
   const dispatch = useAppDispatch();
   //Active menu Item for Redux Store
   const activeItem = useAppSelector((state) => state.menu.activeItem);
-
+  const { me } = useAppSelector((state) => state.user);
+  if (!me) return <div>No user data</div>;
   /**
    * Helper function to derive route path for a given menu item
    *
@@ -73,7 +74,7 @@ export default function MenuBar() {
 
           <Avatar>
             <AvatarImage
-              src="https://github.com/shadcn.png"
+              src={me.img_url}
               alt="AvatarImage"
               className="h-[44px] w-[44px]"
             />

@@ -1,14 +1,13 @@
 
 import { Button } from "@/components/ui/button";
 import googleIcon from "@/assets/g-logo.png";
-import { useNavigate } from "react-router";
+
 
 
 
 export default function LoginForm() {
-  const navigate = useNavigate()
   function handleSignIn() {
-    navigate("/")
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/google`;
   }
   return (
     <div className="flex flex-col w-full items-center">
