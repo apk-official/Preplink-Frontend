@@ -17,11 +17,18 @@ export interface ProjectDetail {
 }
 
 /** ✅ what backend returns (based on your FastAPI code) */
+type BackendInterviewQuestion = {
+  question: string;
+  answer: string;
+  question_type?: string; // ✅ this is what your backend sends
+  type?: string; // optional fallback
+};
+
 type BackendPrepDetailResponse = {
-  interview_question?: { question: string; answer: string; type: string }[];
-  interview_questions?: { question: string; answer: string; type: string }[];
-  interview_tips?: unknown[]; // could be string[] or objects depending on backend
-  about_company?: unknown;    // could be object or array because you used .all()
+  interview_question?: BackendInterviewQuestion[];
+  interview_questions?: BackendInterviewQuestion[];
+  interview_tips?: unknown[];
+  about_company?: unknown;
 };
 
 type ProjectDetailsState = {
@@ -48,7 +55,9 @@ const initialState: ProjectDetailsState = {
 };
 
 // helpers to normalize unknown backend shapes
-function normalizeTips(input: BackendPrepDetailResponse["interview_tips"]): string[] {
+function normalizeTips(
+  input: BackendPrepDetailResponse["interview_tips"],
+): string[] {
   if (!Array.isArray(input)) return [];
   // if backend returns string[]
   if (input.every((t) => typeof t === "string")) return input as string[];
@@ -67,7 +76,9 @@ function normalizeTips(input: BackendPrepDetailResponse["interview_tips"]): stri
     .filter((x): x is string => Boolean(x));
 }
 
-function normalizeAbout(input: BackendPrepDetailResponse["about_company"]): ProjectDetail["about_company"] {
+function normalizeAbout(
+  input: BackendPrepDetailResponse["about_company"],
+): ProjectDetail["about_company"] {
   if (!input) return EMPTY_ABOUT;
 
   // if backend returns list (because .all())
@@ -84,7 +95,8 @@ function normalizeAbout(input: BackendPrepDetailResponse["about_company"]): Proj
     mission: typeof obj.mission === "string" ? obj.mission : "",
     mission_url: typeof obj.mission_url === "string" ? obj.mission_url : "",
     additional: typeof obj.additional === "string" ? obj.additional : "",
-    additional_url: typeof obj.additional_url === "string" ? obj.additional_url : "",
+    additional_url:
+      typeof obj.additional_url === "string" ? obj.additional_url : "",
   };
 }
 
@@ -97,13 +109,21 @@ export const fetchProjectDetails = createAsyncThunk(
     const raw = (await res.json()) as BackendPrepDetailResponse;
 
     const data: ProjectDetail = {
-      interview_questions: raw.interview_question ?? raw.interview_questions ?? [],
+      interview_questions: (
+        raw.interview_question ??
+        raw.interview_questions ??
+        []
+      ).map((q) => ({
+        question: q.question,
+        answer: q.answer,
+        type: (q.type ?? q.question_type ?? "Other").trim() || "Other",
+      })),
       interview_tips: normalizeTips(raw.interview_tips),
       about_company: normalizeAbout(raw.about_company),
     };
 
     return { projectId, data };
-  }
+  },
 );
 
 const projectDetailsSlice = createSlice({
