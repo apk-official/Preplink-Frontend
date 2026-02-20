@@ -24,6 +24,9 @@ import { setActiveItem } from "@/redux/slices/menuSlice";
 import { useEffect } from "react";
 import { logout, logoutUser } from "@/redux/slices/authslice";
 import { clearUser } from "@/redux/slices/userSlice";
+import PrepLinkLogo from "@/assets/Logo Horizontal.svg"
+import { Badge } from "./ui/badge";
+
 
 export default function AppSideBar() {
   //Redux dispatch to update active menu state globally
@@ -76,7 +79,10 @@ export default function AppSideBar() {
     <Sidebar>
       <SidebarContent className="bg-[#fefefe] px-3 gap-0">
         <SidebarHeader>
-          <p className="font-bold">PrepLink</p>
+          <div className="flex items-end justify-start gap-2">
+            <img src={PrepLinkLogo} alt="Preplink Logo Horizontal" className="h-8 w-auto" />
+            <Badge variant="default" className="bg-[#CC2936] text-[#FEFFFE]">Beta</Badge>
+         </div>
         </SidebarHeader>
         <SidebarGroup>
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
