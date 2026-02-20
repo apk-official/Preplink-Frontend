@@ -8,6 +8,7 @@ interface PrepCardProps {
   company: string;
   position: string;
   date: string;
+  img_url: string;
 }
 /**
  * Renders PrepCards which include companies Data
@@ -20,7 +21,7 @@ interface PrepCardProps {
  * A card component which contain company name, Logo, Applied role, created date and time
  *
  */
-export default function PrepCard({ id,company, position, date }: PrepCardProps) {
+export default function PrepCard({ id,company, position, date, img_url }: PrepCardProps) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch()
 
@@ -37,7 +38,7 @@ export default function PrepCard({ id,company, position, date }: PrepCardProps) 
       {/* Row 1 - Company Logo and Arrow Button  */}
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-[#F5F5F5]">
-          D
+          <img src={img_url} alt="Company Img" className="object-cover"/>
         </div>
         <PrepCardDropdown />
       </div>

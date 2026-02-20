@@ -4,23 +4,34 @@ import PrepCard from "@/components/PrepCard";
 import Sort from "@/components/Sort";
 import { Input } from "@/components/ui/input";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/redux/store";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import EmptySearch from "@/components/EmptySearch";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { fetchProjects } from "@/redux/slices/projectSlice";
+import { formatDate } from "@/lib/date";
 
 type SortOption = "NEWEST" | "OLDEST" | "NAME_AZ" | "NAME_ZA";
 
 
 export default function HomePage() {
-  const projects = useSelector((state: RootState) => state.project);
+  const dispatch = useAppDispatch();
+  const { items: projects, status } = useAppSelector(
+    (state) => state.project
+  );
+
+
   const [search, setSearch] = useState<string>("");
   const [sortBy,setSortBy]=useState<SortOption>("NEWEST")
  
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchProjects());
+    }
+  }, [status, dispatch]);
 
   const filteredProjects = useMemo(()=> {
     const filtered = projects.filter((project) =>
-      `${project.company} ${project.position}`
+      `${project.company_name} ${project.position}`
         .toLowerCase()
         .includes(search.toLowerCase()));
       
@@ -28,13 +39,13 @@ export default function HomePage() {
     sorted.sort((a, b) => {
       switch (sortBy) {
         case "NEWEST":
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         case "OLDEST":
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
+          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
         case "NAME_AZ":
-          return a.company.localeCompare(b.company);
+          return a.company_name.localeCompare(b.company_name);
         case "NAME_ZA":
-          return b.company.localeCompare(a.company);
+          return b.company_name.localeCompare(a.company_name);
         default:
           return 0;
       }
@@ -48,13 +59,13 @@ export default function HomePage() {
     <>
       <h2 className="text-xl">My Prep</h2>
 
-      {projects.length===0 && (
+      {status === "ready" && projects.length===0 && (
         <div className="h-full max-w-full flex items-center justify-center">
           <EmptyPrep />
         </div>
       )}
 
-      {projects && (
+      {status === "ready" && projects.length > 0 && (
         <>
           <div className="flex w-full items-center justify-between pt-4 gap-1">
             <div className="flex items-center justify-center gap-1 px-2 py-1 bg-[#F1EDFE] max-w-[232px] rounded-lg">
@@ -84,11 +95,12 @@ export default function HomePage() {
             <div className="max-w-full max-h-full grid grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-4 pt-4">
               {filteredProjects.map((project) => (
                 <PrepCard
-                  key={project.id}
-                  id={project.id}
-                  company={project.company}
+                  key={project.project_id}
+                  id={project.project_id}
+                  company={project.company_name}
                   position={project.position}
-                  date={project.date}
+                  date={formatDate(project.created_at, "DD-MM-YYYY")}
+                  img_url = {project.company_logo}
                 />
               ))}
             </div>

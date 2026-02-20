@@ -11,11 +11,64 @@ import {
 // import { Spinner } from "@/components/ui/spinner";
 import { Button } from "./ui/button";
 import { PlusIcon, RocketLaunchIcon } from "@phosphor-icons/react";
-import CreatePrepForm from "./CreatePrepForm";
+import CreatePrepForm, { type CreatePrepValues } from "./CreatePrepForm";
+import { useNavigate } from "react-router";
+import { useState } from "react";
+import CreatePrepLoading from "./CreatePrepLoading";
+import { apiFetch } from "@/lib/api";
+import { useAppDispatch } from "@/redux/hooks";
+import { fetchProjects } from "@/redux/slices/projectSlice";
 
 export default function CreatePrep() {
+  const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  async function handleCreatePrep(
+    data: CreatePrepValues,
+    reset: () => void,
+    clearFile: () => void,
+  ) {
+    try {
+      setIsLoading(true);
+
+      const formData = new FormData();
+      formData.append("url", data.url);
+      formData.append("job_desc", data.description);
+      formData.append("resume", data.resume);
+
+      const res = await apiFetch("/api/v1/prep", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to create prep");
+      }
+
+      const json = await res.json();
+      const newId = json.project_id ?? json.id;
+
+      if (!newId) throw new Error("Backend did not return project id");
+
+      // ✅ Refresh list
+      await dispatch(fetchProjects());
+
+      // Navigate to project page
+      navigate(`/project/${newId}`);
+
+      reset();
+      clearFile();
+      setOpen(false);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="bg-[#5E2BFF] hover:bg-[#6E40FF] text-[#F5F5F5] text-xs md:text-sm cursor-pointer">
           <PlusIcon size={20} />
@@ -32,7 +85,14 @@ export default function CreatePrep() {
           </DialogDescription>
         </DialogHeader>
         {/* Form Fields  */}
-        <CreatePrepForm />
+        {isLoading ? (
+          <CreatePrepLoading />
+        ) : (
+          <CreatePrepForm
+            onSubmit={handleCreatePrep}
+            isSubmitting={isLoading}
+          />
+        )}
         <DialogFooter>
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
@@ -40,12 +100,12 @@ export default function CreatePrep() {
           <Button
             type="submit"
             form="form-create-prep"
-                      className="bg-[#5E2BFF] hover:bg-[#6E40FF] text-[#F5F5F5] cursor-pointer"
-                      
+            className="bg-[#5E2BFF] hover:bg-[#6E40FF] text-[#F5F5F5] cursor-pointer"
+            disabled={isLoading}
           >
             <RocketLaunchIcon />
             {/* <Spinner /> */}
-            Create Prep
+            {isLoading ? "Creating..." : "Create Prep"}
           </Button>
         </DialogFooter>
       </DialogContent>

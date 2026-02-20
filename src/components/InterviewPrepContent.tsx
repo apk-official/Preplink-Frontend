@@ -1,9 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import InterviewQA from "./InterviewQA";
-import type { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
 import InterviewTips from "./InterviewTips";
 import AboutCompany from "./AboutCompany";
+import { useAppSelector } from "@/redux/hooks";
 
 interface InterviewPrepContentProp {
   id: number;
@@ -18,37 +17,46 @@ interface ProjectDetail {
   interview_tips: string[];
   about_company: {
     about: string;
-    about_url:string,
+    about_url: string;
     vision: string;
-    vision_url:string,
+    vision_url: string;
     mission: string;
-    mission_url:string,
+    mission_url: string;
     additional: string;
-    additional_url:string
+    additional_url: string;
   };
 }
 
 const TabItems = [
   {
-    title: "Interview Q&A", 
+    title: "Interview Q&A",
     render: (detail: ProjectDetail) => (
       <InterviewQA questions={detail.interview_questions} />
     ),
   },
   {
     title: "Tips",
-    render: (detail: ProjectDetail) => (<InterviewTips tips={detail.interview_tips}/>),
+    render: (detail: ProjectDetail) => (
+      <InterviewTips tips={detail.interview_tips} />
+    ),
   },
   {
     title: "About the company",
-    render: (detail: ProjectDetail) => (<AboutCompany about_company={detail.about_company } />),
+    render: (detail: ProjectDetail) => (
+      <AboutCompany about_company={detail.about_company} />
+    ),
   },
 ];
 
 export default function InterviewPrepContent({ id }: InterviewPrepContentProp) {
-  const ProjectDetail = useSelector(
-    (state: RootState) => state.projectDetails[String(id)]
+  const detail = useAppSelector((state) => state.projectDetails.byId[id]);
+  const status = useAppSelector(
+    (state) => state.projectDetails.statusById[id] ?? "idle",
   );
+
+  if (status === "loading") return <div className="mt-4 text-sm">Loading…</div>;
+  if (!detail) return null;
+
   return (
     <div className="mt-4">
       <Tabs defaultValue="Interview Q&A" className="gap-3">
@@ -65,7 +73,7 @@ export default function InterviewPrepContent({ id }: InterviewPrepContentProp) {
         </TabsList>
         {TabItems.map((item) => (
           <TabsContent key={item.title} value={item.title}>
-            {item.render(ProjectDetail)}
+            {item.render(detail)}
           </TabsContent>
         ))}
       </Tabs>

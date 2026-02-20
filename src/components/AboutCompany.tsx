@@ -48,7 +48,7 @@ export default function AboutCompany({ about_company }: AboutCompanyProps) {
       {sections.map((section,index)=>(<div key={index} className="border rounded-lg p-2 text-sm flex flex-col items-start justify-start gap-2"><Badge className={`${section.badgeColor} text-[#FEFFFE]`}>{section.label}</Badge>
       {section.content}
       <a
-              href={about_company.mission_url}
+              href={section.url}
               target="_blank"
               rel="noopener noreferrer"
         className="border border-[#5E2BFF] py-1 px-4 rounded-2xl text-xs text-[#5E2BFF] flex items-center justify-center gap-1"

@@ -1,12 +1,9 @@
 import { Button } from "./ui/button";
 import { useState } from "react";
-import {
-  InfoIcon,
-} from "@phosphor-icons/react";
+import { InfoIcon } from "@phosphor-icons/react";
 import { Separator } from "./ui/separator";
-
-interface InterviewQAProps {
-  questions: Question[];
+ interface InterviewQAProps {
+  questions?: Question[];
 }
 interface Question {
   question: string;
@@ -15,10 +12,8 @@ interface Question {
 }
 
 export default function InterviewQA({ questions }: InterviewQAProps) {
-  const groupedQuestions = questions.reduce((acc, q) => {
-    if (!acc[q.type]) {
-      acc[q.type] = [];
-    }
+  const groupedQuestions = (questions ?? []).reduce((acc, q) => {
+    if (!acc[q.type]) acc[q.type] = [];
     acc[q.type].push(q);
     return acc;
   }, {} as Record<string, Question[]>);

@@ -22,7 +22,11 @@ import {
 } from "@/components/ui/input-group";
 
 import { useRef, useState } from "react";
-import { XCircleIcon, CheckCircleIcon, UploadSimpleIcon } from "@phosphor-icons/react";
+import {
+  XCircleIcon,
+  CheckCircleIcon,
+  UploadSimpleIcon,
+} from "@phosphor-icons/react";
 import { Button } from "./ui/button";
 
 const formSchema = z.object({
@@ -47,14 +51,27 @@ const formSchema = z.object({
     })
     .refine(
       (file) => file.size <= 1024 * 1024,
-      "File size must be less than 1MB"
+      "File size must be less than 1MB",
     )
     .refine(
       (file) => file.type === "application/pdf",
-      "Only PDF files are allowed"
+      "Only PDF files are allowed",
     ),
 });
-export default function CreatePrepForm() {
+
+export type CreatePrepValues = z.infer<typeof formSchema>;
+
+export default function CreatePrepForm({
+  onSubmit,
+  isSubmitting,
+}: {
+  onSubmit: (
+    data: CreatePrepValues,
+    reset: () => void,
+    clearFile: () => void,
+  ) => void;
+  isSubmitting: boolean;
+}) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -65,14 +82,9 @@ export default function CreatePrepForm() {
       resume: undefined,
     },
   });
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log("Form Submitted:", data);
-    form.reset();
-    setFileName(null);
-  }
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: ControllerRenderProps<z.infer<typeof formSchema>>
+    field: ControllerRenderProps<z.infer<typeof formSchema>>,
   ) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
@@ -86,13 +98,19 @@ export default function CreatePrepForm() {
     fileInputRef.current?.click();
   };
   const handleRemoveFile = (
-    field: ControllerRenderProps<z.infer<typeof formSchema>>
+    field: ControllerRenderProps<z.infer<typeof formSchema>>,
   ) => {
     setFileName(null);
     field.onChange(undefined);
   };
+  const clearFile = () => setFileName(null);
   return (
-    <form id="form-create-prep" onSubmit={form.handleSubmit(onSubmit)}>
+    <form
+      id="form-create-prep"
+      onSubmit={form.handleSubmit((data) =>
+        onSubmit(data, () => form.reset(), clearFile),
+      )}
+    >
       <FieldGroup className="gap-5">
         <Controller
           name="url"
@@ -109,6 +127,7 @@ export default function CreatePrepForm() {
                 placeholder="https://example.com"
                 autoComplete="off"
                 className="placeholder:font-light"
+                disabled={isSubmitting}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -131,8 +150,9 @@ export default function CreatePrepForm() {
                   id="form-create-prep-description"
                   placeholder="We are looking for..."
                   rows={6}
-                  className="min-h-24 resize-none placeholder:font-light"
+                  className="max-h-24 resize-none placeholder:font-light overflow-scroll"
                   aria-invalid={fieldState.invalid}
+                  disabled={isSubmitting}
                 />
               </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -171,7 +191,8 @@ export default function CreatePrepForm() {
                     className="sr-only"
                     type="file"
                     accept="application/pdf"
-                    onChange={(e) => handleFileChange(e, field)}
+                      onChange={(e) => handleFileChange(e, field)}
+                      disabled={isSubmitting}
                   />
                   <InputGroupInput
                     readOnly
@@ -180,8 +201,12 @@ export default function CreatePrepForm() {
                     placeholder={fileName ? fileName : "No file chosen"}
                   />
                   <InputGroupAddon align="inline-end">
-                    <InputGroupButton onClick={handleClick} variant="secondary" className="bg-0 border border-[#5E2BFF] hover:bg-[#E9E5F6] bg-[#FEFEFE] text-[#5E2BFF] cursor-pointer font-light">
-                     <UploadSimpleIcon/> Upload
+                    <InputGroupButton
+                      onClick={handleClick}
+                      variant="secondary"
+                      className="bg-0 border border-[#5E2BFF] hover:bg-[#E9E5F6] bg-[#FEFEFE] text-[#5E2BFF] cursor-pointer font-light"
+                    >
+                      <UploadSimpleIcon /> Upload
                     </InputGroupButton>
                   </InputGroupAddon>
                 </InputGroup>
