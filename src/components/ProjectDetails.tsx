@@ -5,7 +5,7 @@ import InterviewPrepContent from "./InterviewPrepContent";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useEffect } from "react";
 import { fetchProjectDetails } from "@/redux/slices/projectDetailsSlice";
-import { formatDate } from "@/lib/date";
+import { formatDate, formatTime } from "@/lib/date";
 
 export default function ProjectDetails() {
   const { id } = useParams<{id:string}>();
@@ -65,7 +65,7 @@ export default function ProjectDetails() {
 
       {project?.created_at && (
         <p className="text-xs md:text-sm font-light">
-          Created on {formatDate(project.created_at, "DD MMM YYYY")} {formatDate(project.created_at)}
+          Created on {formatDate(project.created_at, "DD MMM YYYY")} {formatTime(project.created_at)}
         </p>
       )}
 

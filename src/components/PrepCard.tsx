@@ -37,8 +37,8 @@ export default function PrepCard({ id,company, position, date, img_url }: PrepCa
     >
       {/* Row 1 - Company Logo and Arrow Button  */}
       <div className="w-full flex items-center justify-between">
-        <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-[#F5F5F5]">
-          <img src={img_url} alt="Company Img" className="object-cover"/>
+        <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-[#F5F5F5] overflow-hidden">
+          <img src={img_url} alt="Company Img" className="object-cover w-full h-full"/>
         </div>
         <PrepCardDropdown />
       </div>
