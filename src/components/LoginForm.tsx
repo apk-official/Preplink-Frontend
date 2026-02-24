@@ -29,7 +29,7 @@ export default function LoginForm() {
       </Button>
       <div className="flex items-center justify-center mt-4 gap-2 text-xs font-light">
         <Checkbox checked={checked} onCheckedChange={onCheckedChange}/>
-         By continuing, you’re agreeing to PrepLink’s <a href="app.preplink.com/privacy-policy" target="_blank" rel="noreferrer noopener" className="text-[#5E2BFF]">Privacy Policy.</a>
+         By continuing, you’re agreeing to PrepLink’s <a href="/privacy-policy" target="_blank" rel="noreferrer noopener" className="text-[#5E2BFF]">Privacy Policy.</a>
       </div>
     </div>
   );
