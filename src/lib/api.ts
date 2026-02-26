@@ -61,7 +61,6 @@ export async function refreshAccessToken(): Promise<string | null> {
 
 export async function apiFetch(endpoint: string, options: RequestInit = {}) {
   const access = getAccessToken();
-  console.log(access)
   const doFetch = (token?: string) =>
     fetch(`${API_BASE_URL}${endpoint}`, {
       ...options,
